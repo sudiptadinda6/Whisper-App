@@ -39,9 +39,10 @@ export const fileRead = async (req: Request, res: Response): Promise<void> => {
     const namefile: string = req.file.filename
     const model: string = req.body.model
     const language: string = req.body.language
-    const translationtype: string = req.body.translationype
+    const translationtype: boolean = req.body.translationtype
     const directry: string = req.file.destination
     const filePath: string = path.join(directry, namefile)
+    console.log(namefile,model,language,translationtype)
     function execute(): Promise<string> {
 
         let logicArray: string[] = [filePath]
@@ -52,9 +53,9 @@ export const fileRead = async (req: Request, res: Response): Promise<void> => {
             logicArray.push("--language", language)
         }
         if (translationtype) {
-            logicArray.push("--task", translationtype)
+            logicArray.push("--task", "translate")
         }
-
+        console.log(logicArray)
         const outdata = spawn("whisper", logicArray, { cwd: directry });
 
 
