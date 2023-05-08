@@ -37,22 +37,22 @@ export const upload = multer({ storage: storage }).single('file')
 export const fileRead = async (req: Request, res: Response): Promise<void> => {
     console.log("api call get")
     const namefile: string = req.file.filename
-    const type: string = req.body.type
+    const model: string = req.body.model
     const language: string = req.body.language
-    const typeMode: string = req.body.typeMode
+    const translationtype: string = req.body.translationype
     const directry: string = req.file.destination
     const filePath: string = path.join(directry, namefile)
     function execute(): Promise<string> {
 
         let logicArray: string[] = [filePath]
-        if (type) {
-            logicArray.push("--model", type)
+        if (model) {
+            logicArray.push("--model", model)
         }
         if (language) {
             logicArray.push("--language", language)
         }
-        if (typeMode) {
-            logicArray.push("--task", typeMode)
+        if (translationtype) {
+            logicArray.push("--task", translationtype)
         }
 
         const outdata = spawn("whisper", logicArray, { cwd: directry });
