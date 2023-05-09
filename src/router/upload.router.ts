@@ -3,4 +3,4 @@ import { fileRead, upload } from '../controller/userfileupload';
 
 export const router = Router()
 
-router.post('/fileupload',upload, fileRead)
+router.post('/fileupload',upload(), fileRead)

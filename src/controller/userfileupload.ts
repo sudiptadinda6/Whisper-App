@@ -6,29 +6,21 @@ import { spawn } from "child_process";
 import { v4 as uuid } from 'uuid';
 import fs from 'fs'
 
-
-
-
-// enum readFile {
-//     TINY='tiny',
-//     BASE='base',
-//     SMALL='small',
-//     MEDIUM ='medium',
-//     LARGE ='large',
-// }
-
-
-
 //FILE UPLOAD 
 
-const storage = multer.diskStorage({
-    destination: path.join(tmpdir(), uuid()),
-    filename: (req, file, cb) => {
-        cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname))
-    }
-})
-
-export const upload = multer({ storage: storage }).single('file')
+export  const upload =()=> multer({
+    storage: multer.diskStorage({
+        // destination : ,
+        destination: (req, file, callback) => {
+           const  newPath =path.join(tmpdir(), uuid())
+           fs.mkdirSync(newPath);
+            callback(null, newPath);
+          },
+        filename: (req, file, cb) => {
+            cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname))
+        }
+    })
+}).single('file')
 
 
 
@@ -42,7 +34,6 @@ export const fileRead = async (req: Request, res: Response): Promise<void> => {
     const translationtype: boolean = req.body.translationtype
     const directry: string = req.file.destination
     const filePath: string = path.join(directry, namefile)
-    console.log(namefile,model,language,translationtype)
     function execute(): Promise<string> {
 
         let logicArray: string[] = [filePath]
